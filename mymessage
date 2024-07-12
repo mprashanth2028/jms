@@ -1,0 +1,20 @@
+import java.io.Serializable;
+
+public class MyMessage implements Serializable {
+    private String content;
+
+    public MyMessage() {
+    }
+
+    public MyMessage(String content) {
+        this.content = content;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+}
