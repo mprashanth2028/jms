@@ -1,0 +1,65 @@
+import com.ibm.mq.jms.MQQueueConnectionFactory;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.jms.annotation.EnableJms;
+import org.springframework.jms.core.JmsTemplate;
+
+import javax.jms.ConnectionFactory;
+
+@SpringBootApplication
+@EnableJms
+public class MQListenerApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(MQListenerApplication.class, args);
+    }
+
+    @Bean
+    public ConnectionFactory connectionFactory() {
+        MQQueueConnectionFactory mqQueueConnectionFactory = new MQQueueConnectionFactory();
+        // configure the MQ connection factory properties
+        mqQueueConnectionFactory.setHostName("localhost");
+        mqQueueConnectionFactory.setPort(1414);
+        mqQueueConnectionFactory.setQueueManager("QMGR");
+        mqQueueConnectionFactory.setChannel("DEV.APP.SVRCONN");
+        return mqQueueConnectionFactory;
+    }
+
+    @Bean
+    public JmsTemplate jmsTemplate() {
+        return new JmsTemplate(connectionFactory());
+    }
+
+    @JmsListener(destination = "my-queue")
+    public void receiveMessage(MyMessage myMessage) {
+        System.out.println("Received message: " + myMessage.getContent());
+    }
+}
+
+
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MQListenerApplication {
+
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
+    // Method for sending a message to the IBM MQ queue
+    public void sendMessage(String content) {
+        jmsTemplate.convertAndSend("my-queue", new MyMessage(content));
+        System.out.println("Message sent to my-queue: " + content);
+    }
+
+    @JmsListener(destination = "my-queue")
+    public void receiveMessage(MyMessage myMessage) {
+        System.out.println("Received message: " + myMessage.getContent());
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(MQListenerApplication.class, args);
+    }
+}
