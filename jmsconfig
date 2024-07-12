@@ -11,6 +11,13 @@ public class JmsConfig {
         MQConnectionFactory mqConnectionFactory = new MQConnectionFactory();
         // Configure the MQ connection factory properties
         // For example, set host, port, queue manager, channel, etc.
+ connectionFactory.setQueueManager("my-queue-manager");
+        connectionFactory.setChannel("my-channel");
+        connectionFactory.setHostName("my-hostname");
+        connectionFactory.setPort(my-port);
+        connectionFactory.setUserID("my-user");
+        connectionFactory.setPassword("my-password");
+        return connectionFactory;
         return mqConnectionFactory;
     }
 
