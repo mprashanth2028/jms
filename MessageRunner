@@ -1,0 +1,26 @@
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MessageRunner implements CommandLineRunner {
+
+    private final MessageService messageService;
+
+    public MessageRunner(MessageService messageService) {
+        this.messageService = messageService;
+    }
+
+    @Override
+    public void run(String... args) {
+        MyMessage myMessage = new MyMessage("Message sent to IBM MQ");
+        messageService.sendMessage(myMessage);
+        System.out.println("Message sent: " + myMessage.getContent());
+
+        MyMessage receivedMessage = messageService.receiveMessage();
+        if (receivedMessage != null) {
+            System.out.println("Message received: " + receivedMessage.getContent());
+        } else {
+            System.out.println("No message received from the queue.");
+        }
+    }
+}
