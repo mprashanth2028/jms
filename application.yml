@@ -1,0 +1,6 @@
+# IBM MQ connection properties
+ibm.mq.queueManager=my-queue-manager
+ibm.mq.channel=my-channel
+ibm.mq.connName=my-hostname(my-port)
+ibm.mq.user=my-user
+ibm.mq.password=my-password
