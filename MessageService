@@ -1,0 +1,20 @@
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MessageService {
+
+    private final JmsTemplate jmsTemplate;
+
+    public MessageService(JmsTemplate jmsTemplate) {
+        this.jmsTemplate = jmsTemplate;
+    }
+
+    public void sendMessage(MyMessage myMessage) {
+        jmsTemplate.convertAndSend("my-queue", myMessage);
+    }
+
+    public MyMessage receiveMessage() {
+        return (MyMessage) jmsTemplate.receiveAndConvert("my-queue");
+    }
+}
