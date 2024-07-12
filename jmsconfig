@@ -1,0 +1,21 @@
+import com.ibm.mq.jms.MQConnectionFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.core.JmsTemplate;
+
+@Configuration
+public class JmsConfig {
+
+    @Bean
+    public MQConnectionFactory mqConnectionFactory() {
+        MQConnectionFactory mqConnectionFactory = new MQConnectionFactory();
+        // Configure the MQ connection factory properties
+        // For example, set host, port, queue manager, channel, etc.
+        return mqConnectionFactory;
+    }
+
+    @Bean
+    public JmsTemplate jmsTemplate() {
+        return new JmsTemplate(mqConnectionFactory());
+    }
+}
